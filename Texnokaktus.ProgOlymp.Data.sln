@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texnokaktus.ProgOlymp.Data", "Texnokaktus.ProgOlymp.Data\Texnokaktus.ProgOlymp.Data.csproj", "{8790276C-37B8-4401-8AFA-16275DB353EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texnokaktus.ProgOlymp.Data.DataAccess", "Texnokaktus.ProgOlymp.Data.DataAccess\Texnokaktus.ProgOlymp.Data.DataAccess.csproj", "{33CA6949-88B7-44D7-B1AF-6B13E8852FEB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F044E2BD-CC5C-4EE5-986C-C98BF9BD9928}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texnokaktus.ProgOlymp.Common.Contracts", "modules\Common.Contracts\Texnokaktus.ProgOlymp.Common.Contracts\Texnokaktus.ProgOlymp.Common.Contracts.csproj", "{A27BEBF1-BE87-4593-AF6D-AF55AFC7FC93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texnokaktus.ProgOlymp.Data.Infrastructure", "Texnokaktus.ProgOlymp.Data.Infrastructure\Texnokaktus.ProgOlymp.Data.Infrastructure.csproj", "{F59EEF1D-50ED-4003-94CF-520AC85110E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,14 +18,14 @@ Global
 		{8790276C-37B8-4401-8AFA-16275DB353EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8790276C-37B8-4401-8AFA-16275DB353EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8790276C-37B8-4401-8AFA-16275DB353EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33CA6949-88B7-44D7-B1AF-6B13E8852FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33CA6949-88B7-44D7-B1AF-6B13E8852FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33CA6949-88B7-44D7-B1AF-6B13E8852FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33CA6949-88B7-44D7-B1AF-6B13E8852FEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A27BEBF1-BE87-4593-AF6D-AF55AFC7FC93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A27BEBF1-BE87-4593-AF6D-AF55AFC7FC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A27BEBF1-BE87-4593-AF6D-AF55AFC7FC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A27BEBF1-BE87-4593-AF6D-AF55AFC7FC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F59EEF1D-50ED-4003-94CF-520AC85110E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F59EEF1D-50ED-4003-94CF-520AC85110E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F59EEF1D-50ED-4003-94CF-520AC85110E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F59EEF1D-50ED-4003-94CF-520AC85110E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A27BEBF1-BE87-4593-AF6D-AF55AFC7FC93} = {F044E2BD-CC5C-4EE5-986C-C98BF9BD9928}

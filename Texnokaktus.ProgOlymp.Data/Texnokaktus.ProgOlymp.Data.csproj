@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Texnokaktus.ProgOlymp.Data.DataAccess\Texnokaktus.ProgOlymp.Data.DataAccess.csproj" />
+      <AdditionalFiles Include="Views\Contests\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Views\Contests\Index.cshtml" />
+      <ProjectReference Include="..\Texnokaktus.ProgOlymp.Data.Infrastructure\Texnokaktus.ProgOlymp.Data.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

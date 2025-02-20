@@ -1,12 +1,12 @@
-@model Texnokaktus.ProgOlymp.Data.DataAccess.Entities.Contest
+@model Texnokaktus.ProgOlymp.Data.Models.ContestRegistrations
 
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.ContestName;
     Layout = "_Layout";
 }
 
 <div class="d-flex flex-row justify-content-between">
-    <h2>@Model.Name</h2>
+    <h2>@Model.ContestName</h2>
     <a class="btn btn-success align-content-center">Скачать в формате Excel</a>
 </div>
 
@@ -31,13 +31,13 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var application in Model.Applications)
+    @foreach (var registration in Model.Registrations)
     {
         <tr>
-            <td>@application.LastName @application.FirstName @application.Patronym</td>
+            <td>@registration.ParticipantData.Name.FullName</td>
             @* <td>@application.BirthDate.ToString("dd.MM.yyyy")</td> *@
-            <td>@application.Grade</td>
-            @switch (application.Grade)
+            <td>@registration.ParticipantData.Grade</td>
+            @switch (registration.ParticipantData.Grade)
             {
                 case 8 or 9:
                     <td>8-9 класс</td>
@@ -50,16 +50,16 @@
                     break;
             }
             @* <td>@application.Snils</td> *@
-            <td>@application.Email</td>
-            <td>@application.SchoolName</td>
-            <td>@application.Region.Name</td>
+            <td>@registration.ParticipantData.Email</td>
+            <td>@registration.ParticipantData.School</td>
+            <td>@registration.ParticipantData.Region</td>
             @* <td>@application.Parent.LastName @application.Parent.FirstName @application.Parent.Patronym</td> *@
             @* <td>@application.Parent.Email</td> *@
             @* <td>@application.Parent.Phone</td> *@
-            <td>@application.Teacher.LastName @application.Teacher.FirstName @application.Teacher.Patronym</td>
-            <td>@application.Teacher.School</td>
-            <td>@application.Teacher.Email</td>
-            <td>@application.Teacher.Phone</td>
+            <td>@registration.TeacherData.Name.FullName</td>
+            <td>@registration.TeacherData.School</td>
+            <td>@registration.TeacherData.Email</td>
+            <td>@registration.TeacherData.Phone</td>
         </tr>
     }
     </tbody>

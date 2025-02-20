@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Texnokaktus.ProgOlymp.Data.DataAccess;
+using Texnokaktus.ProgOlymp.Data.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +6,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-builder.Services.AddDataAccess(optionsBuilder => optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDb"))
-                                                               .EnableSensitiveDataLogging(builder.Environment.IsDevelopment()));
+builder.Services.AddGrpcClients(builder.Configuration);
 
 var app = builder.Build();
 

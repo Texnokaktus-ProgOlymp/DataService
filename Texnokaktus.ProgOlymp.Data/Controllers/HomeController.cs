@@ -6,7 +6,7 @@ namespace Texnokaktus.ProgOlymp.Data.Controllers;
 
 public class HomeController(ILogger<HomeController> logger) : Controller
 {
-    public IActionResult Index() => RedirectToAction(nameof(Index), "Contests", new { contestId = 1 });
+    public IActionResult Index() => RedirectToAction(nameof(Index), "Contests");
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

@@ -1,0 +1,36 @@
+@model IEnumerable<Texnokaktus.ProgOlymp.Data.DataAccess.Entities.Contest>
+
+@{
+    ViewBag.Title = "Соревнования";
+    Layout = "_Layout";
+}
+
+<h2>Соревнования</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID соревнования</th>
+        <th>Название</th>
+        <th>Начало регистрации</th>
+        <th>Окончание регистрации</th>
+        @* <th>ID отборочного контеста</th> *@
+        @* <th>ID очного контеста</th> *@
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var contest in Model)
+    {
+        <tr>
+            <td>@contest.Id</td>
+            <td>@contest.Name</td>
+            <td>@contest.RegistrationStart.ToOffset(TimeSpan.FromHours(3)).ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>@contest.RegistrationFinish.ToOffset(TimeSpan.FromHours(3)).ToString("dd.MM.yyyy HH:mm:ss")</td>
+            @* <td>@contest.PreliminaryStageId</td> *@
+            @* <td>@contest.FinalStageId</td> *@
+            <td><a asp-action="Contest" asp-route-contestId="@contest.Id">Перейти</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

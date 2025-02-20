@@ -1,0 +1,66 @@
+@model Texnokaktus.ProgOlymp.Data.DataAccess.Entities.Contest
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "_Layout";
+}
+
+<div class="d-flex flex-row justify-content-between">
+    <h2>@Model.Name</h2>
+    <a class="btn btn-success align-content-center">Скачать в формате Excel</a>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>ФИО</th>
+        @* <th>Дата рождения</th> *@
+        <th>Класс</th>
+        <th>Возрастная группа</th>
+        @* <th>СНИЛС</th> *@
+        <th>Email</th>
+        <th>ОУ</th>
+        <th>Регион</th>
+        @* <th>Родитель</th> *@
+        @* <th>Email (родитель)</th> *@
+        @* <th>Телефон (родитель)</th> *@
+        <th>Наставник</th>
+        <th>ОУ (наставник)</th>
+        <th>Email (наставник)</th>
+        <th>Телефон (наставник)</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var application in Model.Applications)
+    {
+        <tr>
+            <td>@application.LastName @application.FirstName @application.Patronym</td>
+            @* <td>@application.BirthDate.ToString("dd.MM.yyyy")</td> *@
+            <td>@application.Grade</td>
+            @switch (application.Grade)
+            {
+                case 8 or 9:
+                    <td>8-9 класс</td>
+                    break;
+                case 10 or 11:
+                    <td>10-11 класс</td>
+                    break;
+                default:
+                    <td>&mdash;</td>
+                    break;
+            }
+            @* <td>@application.Snils</td> *@
+            <td>@application.Email</td>
+            <td>@application.SchoolName</td>
+            <td>@application.Region.Name</td>
+            @* <td>@application.Parent.LastName @application.Parent.FirstName @application.Parent.Patronym</td> *@
+            @* <td>@application.Parent.Email</td> *@
+            @* <td>@application.Parent.Phone</td> *@
+            <td>@application.Teacher.LastName @application.Teacher.FirstName @application.Teacher.Patronym</td>
+            <td>@application.Teacher.School</td>
+            <td>@application.Teacher.Email</td>
+            <td>@application.Teacher.Phone</td>
+        </tr>
+    }
+    </tbody>
+</table>

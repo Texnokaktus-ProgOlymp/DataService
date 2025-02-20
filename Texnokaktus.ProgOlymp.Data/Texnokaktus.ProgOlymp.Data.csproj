@@ -14,4 +14,8 @@
       <ProjectReference Include="..\Texnokaktus.ProgOlymp.Data.Infrastructure\Texnokaktus.ProgOlymp.Data.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ClosedXML" Version="0.104.2" />
+    </ItemGroup>
+
 </Project>

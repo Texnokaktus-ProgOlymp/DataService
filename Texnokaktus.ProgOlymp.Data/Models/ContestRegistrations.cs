@@ -1,3 +1,3 @@
 namespace Texnokaktus.ProgOlymp.Data.Models;
 
-public record ContestRegistrations(string ContestName, IEnumerable<Registration> Registrations);
+public record ContestRegistrations(int ContestId, string ContestName, IEnumerable<Registration> Registrations);

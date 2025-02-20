@@ -7,7 +7,7 @@
 
 <div class="d-flex flex-row justify-content-between">
     <h2>@Model.ContestName</h2>
-    <a class="btn btn-success align-content-center">Скачать в формате Excel</a>
+    <a class="btn btn-success align-content-center" asp-action="Excel" asp-route-contestId="@Model.ContestId">Скачать в формате Excel</a>
 </div>
 
 <table class="table">

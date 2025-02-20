@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using System.Diagnostics
+@using System.Reflection
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -37,8 +40,9 @@
 </div>
 
 <footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2025 - ЦДЮТТИТ Пушкинского района Санкт-Петербурга
+    <div class="container d-flex flex-row justify-content-between">
+        <p>&copy; 2025 &mdash; ЦДЮТТИТ Пушкинского района Санкт-Петербурга</p>
+        <p>Version @(Assembly.GetEntryAssembly()?.Location is { } location ? FileVersionInfo.GetVersionInfo(location).ProductVersion ?? "N/A" : "N/A")</p>
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

@@ -55,7 +55,7 @@ public class ContestsController(IRegistrationDataServiceClient client) : Control
             worksheet.Cell(currentRow, 7).SetValue(registration.ParticipantData.AgeGroup);
             worksheet.Cell(currentRow, 8).SetValue(registration.ParticipantData.Grade);
             worksheet.Cell(currentRow, 9).SetValue(registration.ParticipantData.BirthDate.ToDateTime(new(0, 0)));
-            worksheet.Cell(currentRow, 10).SetValue(registration.ParticipantData.Snils).FormatInvalidData(registration.ParticipantData.IsSnilsValid);
+            worksheet.Cell(currentRow, 10).SetValue(registration.ParticipantData.Snils).FormatInvalidData(!registration.ParticipantData.IsSnilsValid);
             worksheet.Cell(currentRow, 11).SetValue(registration.ParticipantData.Email);
             worksheet.Cell(currentRow, 12).SetValue(registration.ParticipantData.School);
             worksheet.Cell(currentRow, 13).SetValue(registration.ParticipantData.Region);

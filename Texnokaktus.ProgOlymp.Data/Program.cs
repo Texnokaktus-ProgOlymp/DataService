@@ -1,5 +1,6 @@
 using Serilog;
 using Texnokaktus.ProgOlymp.Data.Infrastructure;
+using Texnokaktus.ProgOlymp.Data.Middlewares;
 using Texnokaktus.ProgOlymp.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +27,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseAuthorization();
-
 app.MapStaticAssets();
+
+app.UseMiddleware<ClientIpLoggingMiddleware>();
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}")
    .WithStaticAssets();

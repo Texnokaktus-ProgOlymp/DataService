@@ -46,30 +46,32 @@ public class ContestsController(IRegistrationDataServiceClient client) : Control
         var currentRow = 3;
         foreach (var registration in contestRegistrations.Registrations)
         {
-            worksheet.Cell(currentRow, 1).SetValue(registration.Id);
-            worksheet.Cell(currentRow, 2).SetValue(registration.Created.ToOffset(TimeSpan.FromHours(3)).DateTime);
-            worksheet.Cell(currentRow, 3).SetValue(registration.PersonalDataConsent);
-            worksheet.Cell(currentRow, 4).SetValue(registration.ParticipantData.Name.LastName);
-            worksheet.Cell(currentRow, 5).SetValue(registration.ParticipantData.Name.FirstName);
-            worksheet.Cell(currentRow, 6).SetValue(registration.ParticipantData.Name.Patronym);
-            worksheet.Cell(currentRow, 7).SetValue(registration.ParticipantData.AgeGroup);
-            worksheet.Cell(currentRow, 8).SetValue(registration.ParticipantData.Grade);
-            worksheet.Cell(currentRow, 9).SetValue(registration.ParticipantData.BirthDate.ToDateTime(new(0, 0)));
-            worksheet.Cell(currentRow, 10).SetValue(registration.ParticipantData.Snils).FormatInvalidData(!registration.ParticipantData.IsSnilsValid);
-            worksheet.Cell(currentRow, 11).SetValue(registration.ParticipantData.Email);
-            worksheet.Cell(currentRow, 12).SetValue(registration.ParticipantData.School);
-            worksheet.Cell(currentRow, 13).SetValue(registration.ParticipantData.Region);
-            worksheet.Cell(currentRow, 14).SetValue(registration.ParentData.Name.LastName);
-            worksheet.Cell(currentRow, 15).SetValue(registration.ParentData.Name.FirstName);
-            worksheet.Cell(currentRow, 16).SetValue(registration.ParentData.Name.Patronym);
-            worksheet.Cell(currentRow, 17).SetValue(registration.ParentData.Email);
-            worksheet.Cell(currentRow, 18).SetValue(registration.ParentData.Phone);
-            worksheet.Cell(currentRow, 19).SetValue(registration.TeacherData.Name.LastName);
-            worksheet.Cell(currentRow, 20).SetValue(registration.TeacherData.Name.FirstName);
-            worksheet.Cell(currentRow, 21).SetValue(registration.TeacherData.Name.Patronym);
-            worksheet.Cell(currentRow, 22).SetValue(registration.TeacherData.Email);
-            worksheet.Cell(currentRow, 23).SetValue(registration.TeacherData.Phone);
-            worksheet.Cell(currentRow, 24).SetValue(registration.TeacherData.School);
+            var column = 0;
+            worksheet.Cell(currentRow, ++column).SetValue(registration.Id);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.Uid.ToString());
+            worksheet.Cell(currentRow, ++column).SetValue(registration.Created.ToOffset(TimeSpan.FromHours(3)).DateTime);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.PersonalDataConsent);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.LastName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.FirstName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.Patronym);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.AgeGroup);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Grade);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.BirthDate.ToDateTime(new(0, 0)));
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Snils).FormatInvalidData(!registration.ParticipantData.IsSnilsValid);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Email);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.School);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Region);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Name.LastName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Name.FirstName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Name.Patronym);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Email);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Phone);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Name.LastName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Name.FirstName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Name.Patronym);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Email);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Phone);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.School);
 
             currentRow++;
         }
@@ -98,7 +100,7 @@ public class ContestsController(IRegistrationDataServiceClient client) : Control
 
     private static readonly IEnumerable<ColumnBlock> Columns =
     [
-        new(null, ["ID регистрации", "Время регистрации", "Согласие на обработку ПД"]),
+        new(null, ["ID регистрации", "UID", "Время регистрации", "Согласие на обработку ПД"]),
         new("Участник", [ "Фамилия", "Имя", "Отчество", "Возрастная группа", "Класс", "Дата рождения", "СНИЛС", "Email", "ОУ", "Регион" ]),
         new("Родитель", [ "Фамилия", "Имя", "Отчество", "Email", "Телефон" ]),
         new("Наставник", [ "Фамилия", "Имя", "Отчество", "Email", "Телефон", "ОУ" ]),
@@ -131,6 +133,7 @@ file static class MappingExtensions
 {
     public static Registration MapRegistration(this Common.Contracts.Grpc.Data.Registration registration) =>
         new(registration.Id,
+            new(registration.Uid.ToByteArray()),
             registration.User.MapUser(),
             registration.Created.ToDateTimeOffset(),
             registration.ParticipantData.MapParticipantData(),

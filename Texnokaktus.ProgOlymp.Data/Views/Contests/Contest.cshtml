@@ -13,6 +13,7 @@
 <table class="table">
     <thead>
     <tr>
+        <th>UID</th>
         <th>ФИО</th>
         @* <th>Дата рождения</th> *@
         <th>Класс</th>
@@ -34,6 +35,7 @@
     @foreach (var registration in Model.Registrations)
     {
         <tr>
+            <td>@registration.Uid</td>
             <td>@registration.ParticipantData.Name.FullName</td>
             @* <td>@application.BirthDate.ToString("dd.MM.yyyy")</td> *@
             <td>@registration.ParticipantData.Grade</td>

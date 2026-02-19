@@ -13,7 +13,9 @@ builder.Services.AddGrpcClients(builder.Configuration);
 
 builder.Services.AddTexnokaktusOpenTelemetry("DataService", null, null);
 
-builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom
+                                                                 .Configuration(context.Configuration)
+                                                                 .AddOpenTelemetrySupport("DataService"));
 
 var app = builder.Build();
 

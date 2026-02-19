@@ -7,7 +7,7 @@ namespace Texnokaktus.ProgOlymp.Data.Controllers;
 
 public class ContestsController(IRegistrationDataServiceClient client) : Controller
 {
-    public IActionResult Index() => RedirectToAction(nameof(Contest), new { contestId = 1 });
+    public IActionResult Index() => RedirectToAction(nameof(Contest), new { contestId = 1001 });
 
     [Route("[controller]/{contestId:int}")]
     public async Task<IActionResult> Contest(int contestId) =>

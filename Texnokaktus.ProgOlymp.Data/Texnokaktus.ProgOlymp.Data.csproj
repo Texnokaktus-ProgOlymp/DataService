@@ -22,7 +22,6 @@
       <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
-      <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
       <PackageReference Include="Texnokaktus.ProgOlymp.OpenTelemetry" Version="1.13.1" />
     </ItemGroup>
 

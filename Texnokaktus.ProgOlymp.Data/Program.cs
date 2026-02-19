@@ -11,13 +11,11 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddGrpcClients(builder.Configuration);
 
-builder.Services.AddTexnokaktusOpenTelemetry(builder.Configuration, "DataService", null, null);
+builder.Services.AddTexnokaktusOpenTelemetry("DataService", null, null);
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
-
-app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 if (!app.Environment.IsDevelopment())
 {

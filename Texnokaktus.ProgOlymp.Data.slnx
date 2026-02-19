@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Common/">
+    <Project Path="modules/Common.Contracts/Texnokaktus.ProgOlymp.Common.Contracts/Texnokaktus.ProgOlymp.Common.Contracts.csproj" />
+  </Folder>
+  <Project Path="Texnokaktus.ProgOlymp.Data.Infrastructure/Texnokaktus.ProgOlymp.Data.Infrastructure.csproj" />
+  <Project Path="Texnokaktus.ProgOlymp.Data/Texnokaktus.ProgOlymp.Data.csproj" />
+</Solution>

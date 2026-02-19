@@ -5,9 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "master", "dev" ]
-  pull_request:
-    branches: [ "master", "dev" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -35,7 +33,6 @@ jobs:
 
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
 
     env:
       REGISTRY: ghcr.io
@@ -93,34 +90,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  deploy:
-    
-    needs: docker
-    runs-on: cttit
-    if: github.ref == 'refs/heads/master'
-    
-    env:
-      IMAGE: ${{ needs.docker.outputs.name }}
-      CONTAINER_NAME: data-service
-      HTTP_PORT: 5201
-      GRPC_PORT: 5202
-
-    steps:
-      - name: Get old image hash
-        id: old-image
-        run: sudo docker container inspect ${{ env.CONTAINER_NAME }} --format='{{.Config.Image}}' | awk '{print "image="$1}' >> $GITHUB_OUTPUT
-
-      - name: Pull new container
-        run: sudo docker pull ${{ env.IMAGE }}
-
-      - name: Stop running container
-        run: sudo docker stop ${{ env.CONTAINER_NAME }} || true
-
-      - name: Remove old container
-        run: sudo docker container rm ${{ env.CONTAINER_NAME }} || true
-
-      - name: Run a new container
-        run: sudo docker run -d --env-file ~/env/${{ env.CONTAINER_NAME }}.env -p ${{ env.HTTP_PORT }}:8080 -p ${{ env.GRPC_PORT }}:8081 --name ${{ env.CONTAINER_NAME }} --network progolymp --restart unless-stopped --label "traefik.http.routers.${{ env.CONTAINER_NAME }}.rule=Host(\`data.progolymp.cttit.ru\`)" --label "traefik.http.routers.${{ env.CONTAINER_NAME }}.middlewares=observer-auth@file" ${{ env.IMAGE }}
-
-      - name: Delete old image
-        run: sudo docker image rm ${{ steps.old-image.outputs.image }} || true
+      - name: Push tag
+        run: |
+          tag=${{ steps.get-version.outputs.version }}
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag "v${tag}"
+          git push origin "v${tag}"

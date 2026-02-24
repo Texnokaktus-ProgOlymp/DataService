@@ -11,7 +11,7 @@ internal class ExcelService : IExcelService
         new(null,
         [
             new("ID регистрации", registration => registration.Id),
-            new("UID", registration => registration.Uid.ToString()),
+            new("UID", registration => registration.Uid.ToString("N")),
             new("Время регистрации", registration => registration.Created.ToOffset(TimeSpan.FromHours(3)).DateTime),
             new("Согласие на обработку ПД", registration => registration.PersonalDataConsent)
         ]),

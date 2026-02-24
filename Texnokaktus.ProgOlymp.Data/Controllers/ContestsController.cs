@@ -1,13 +1,20 @@
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Texnokaktus.ProgOlymp.Data.Infrastructure.Clients.Abstractions;
 using Texnokaktus.ProgOlymp.Data.Models;
+using Texnokaktus.ProgOlymp.Data.Options;
 
 namespace Texnokaktus.ProgOlymp.Data.Controllers;
 
-public class ContestsController(IRegistrationDataServiceClient client) : Controller
+public class ContestsController(IRegistrationDataServiceClient client, IOptions<ContestRoutingOptions> routingOptions) : Controller
 {
-    public IActionResult Index() => RedirectToAction(nameof(Contest), new { contestId = 1001 });
+    public IActionResult Index() =>
+        RedirectToAction(nameof(Contest),
+                         new
+                         {
+                             contestId = routingOptions.Value.DefaultContest
+                         });
 
     [Route("[controller]/{contestId:int}")]
     public async Task<IActionResult> Contest(int contestId) =>

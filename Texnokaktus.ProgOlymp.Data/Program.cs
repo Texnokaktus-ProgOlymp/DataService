@@ -1,6 +1,7 @@
 using Serilog;
 using Texnokaktus.ProgOlymp.Data.Infrastructure;
 using Texnokaktus.ProgOlymp.Data.Middlewares;
+using Texnokaktus.ProgOlymp.Data.Options;
 using Texnokaktus.ProgOlymp.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddTexnokaktusOpenTelemetry("DataService", null, null);
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom
                                                                  .Configuration(context.Configuration)
                                                                  .AddOpenTelemetrySupport("DataService"));
+
+builder.Services.AddOptions<ContestRoutingOptions>().BindConfiguration(nameof(ContestRoutingOptions));
 
 var app = builder.Build();
 

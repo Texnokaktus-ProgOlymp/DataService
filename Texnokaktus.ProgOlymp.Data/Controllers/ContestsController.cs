@@ -111,21 +111,24 @@ internal record ColumnBlock(string? Name, string[] Columns);
 
 file static class ExcelExtensions
 {
-    public static IXLCell IsHeader(this IXLCell cell)
+    extension(IXLCell cell)
     {
-        cell.Style.Font.Bold = true;
-        return cell;
-    }
-
-    public static IXLCell FormatInvalidData(this IXLCell cell, bool condition)
-    {
-        if (condition)
+        public IXLCell IsHeader()
         {
-            cell.Style.Font.FontColor = XLColor.DarkRed;
-            cell.Style.Fill.BackgroundColor = XLColor.Pink;
+            cell.Style.Font.Bold = true;
+            return cell;
         }
 
-        return cell;
+        public IXLCell FormatInvalidData(bool condition)
+        {
+            if (!condition)
+                return cell;
+
+            cell.Style.Font.FontColor = XLColor.DarkRed;
+            cell.Style.Fill.BackgroundColor = XLColor.Pink;
+
+            return cell;
+        }
     }
 }
 

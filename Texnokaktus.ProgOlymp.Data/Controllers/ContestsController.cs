@@ -61,7 +61,7 @@ public class ContestsController(IRegistrationDataServiceClient client, IOptions<
             worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.LastName);
             worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.FirstName);
             worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.Patronym);
-            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.AgeGroup);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.AgeGroup is { } ageGroup ? $"{ageGroup.StartGrade}\u2013{ageGroup.EndGrade} класс" : null);
             worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Grade);
             worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.BirthDate.ToDateTime(new(0, 0)));
             worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Snils).FormatInvalidData(!registration.ParticipantData.IsSnilsValid);

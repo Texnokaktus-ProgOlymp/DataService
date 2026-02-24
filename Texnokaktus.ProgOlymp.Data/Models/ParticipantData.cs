@@ -9,10 +9,10 @@ public record ParticipantData(Name Name,
                               string Region,
                               int Grade)
 {
-    public string AgeGroup => Grade switch
+    public AgeGroup? AgeGroup => Grade switch
     {
-        8 or 9   => "8-9 класс",
-        10 or 11 => "10-11 класс",
-        _        => "-"
+        8 or 9   => new(8, 9),
+        10 or 11 => new(10, 11),
+        _        => null
     };
 };

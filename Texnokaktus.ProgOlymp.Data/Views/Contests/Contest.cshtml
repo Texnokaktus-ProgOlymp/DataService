@@ -39,17 +39,13 @@
             <td>@registration.ParticipantData.Name.FullName</td>
             @* <td>@application.BirthDate.ToString("dd.MM.yyyy")</td> *@
             <td>@registration.ParticipantData.Grade</td>
-            @switch (registration.ParticipantData.Grade)
+            @if (registration.ParticipantData.AgeGroup is { } ageGroup)
             {
-                case 8 or 9:
-                    <td>8-9 класс</td>
-                    break;
-                case 10 or 11:
-                    <td>10-11 класс</td>
-                    break;
-                default:
-                    <td>&mdash;</td>
-                    break;
+                <td>@(ageGroup.StartGrade)&ndash;@(ageGroup.EndGrade) класс</td>
+            }
+            else
+            {
+                <td></td>
             }
             @* <td>@application.Snils</td> *@
             <td>@registration.ParticipantData.Email</td>

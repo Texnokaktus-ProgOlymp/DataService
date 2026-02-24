@@ -6,12 +6,45 @@ namespace Texnokaktus.ProgOlymp.Data.Services;
 
 internal class ExcelService : IExcelService
 {
-    private static readonly IEnumerable<ColumnBlock> Columns =
+    private static readonly IEnumerable<ColumnBlock> ColumnBlocks =
     [
-        new(null, ["ID регистрации", "UID", "Время регистрации", "Согласие на обработку ПД"]),
-        new("Участник", [ "Фамилия", "Имя", "Отчество", "Возрастная группа", "Класс", "Дата рождения", "СНИЛС", "Email", "ОУ", "Регион" ]),
-        new("Родитель", [ "Фамилия", "Имя", "Отчество", "Email", "Телефон" ]),
-        new("Наставник", [ "Фамилия", "Имя", "Отчество", "Email", "Телефон", "ОУ" ]),
+        new(null,
+        [
+            new("ID регистрации", registration => registration.Id),
+            new("UID", registration => registration.Uid.ToString()),
+            new("Время регистрации", registration => registration.Created.ToOffset(TimeSpan.FromHours(3)).DateTime),
+            new("Согласие на обработку ПД", registration => registration.PersonalDataConsent)
+        ]),
+        new("Участник",
+        [
+            new("Фамилия", registration => registration.ParticipantData.Name.LastName),
+            new("Имя", registration => registration.ParticipantData.Name.FirstName),
+            new("Отчество", registration => registration.ParticipantData.Name.Patronym),
+            new("Возрастная группа", registration => registration.ParticipantData.AgeGroup is { } ageGroup ? $"{ageGroup.StartGrade}\u2013{ageGroup.EndGrade} класс" : null),
+            new("Класс", registration => registration.ParticipantData.Grade),
+            new("Дата рождения", registration => registration.ParticipantData.BirthDate.ToDateTime(new(0, 0))),
+            new("СНИЛС", registration => registration.ParticipantData.Snils, (cell, registration) => cell.FormatInvalidData(!registration.ParticipantData.IsSnilsValid)),
+            new("Email", registration => registration.ParticipantData.Email),
+            new("ОУ", registration => registration.ParticipantData.School),
+            new("Регион", registration => registration.ParticipantData.Region)
+        ]),
+        new("Родитель",
+        [
+            new("Фамилия", registration => registration.ParentData.Name.LastName),
+            new("Имя", registration => registration.ParentData.Name.FirstName),
+            new("Отчество", registration => registration.ParentData.Name.Patronym),
+            new("Email", registration => registration.ParentData.Email),
+            new("Телефон", registration => registration.ParentData.Phone)
+        ]),
+        new("Наставник",
+        [
+            new("Фамилия", registration => registration.TeacherData.Name.LastName),
+            new("Имя", registration => registration.TeacherData.Name.FirstName),
+            new("Отчество", registration => registration.TeacherData.Name.Patronym),
+            new("Email", registration => registration.TeacherData.Email),
+            new("Телефон", registration => registration.TeacherData.Phone),
+            new("ОУ", registration => registration.TeacherData.School)
+        ])
     ];
 
     public Stream GenerateExcel(IEnumerable<Registration> registrations)
@@ -20,7 +53,7 @@ internal class ExcelService : IExcelService
         var worksheet = workbook.Worksheets.Add();
 
         var currentColumn = 1;
-        foreach (var (blockName, columnNames) in Columns)
+        foreach (var (blockName, columns) in ColumnBlocks)
         {
             if (blockName is not null)
             {
@@ -28,21 +61,26 @@ internal class ExcelService : IExcelService
                 topCell.SetValue(blockName).IsHeader();
                 topCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
-                worksheet.Range(topCell, worksheet.Cell(1, currentColumn + columnNames.Length - 1)).Merge();
+                worksheet.Range(topCell, worksheet.Cell(1, currentColumn + columns.Length - 1)).Merge();
             }
-            
-            foreach (var column in columnNames)
+
+            foreach (var column in columns)
             {
                 var cell = worksheet.Cell(2, currentColumn++);
-                cell.SetValue(column).IsHeader();
+                cell.SetValue(column.Name).IsHeader();
             }
         }
 
         var currentRow = 3;
         foreach (var registration in registrations)
         {
-            foreach (var (cell, (cellValue, cellAction)) in GenerateColumns(worksheet, currentRow).Zip(GenerateCells(registration)))
-                cell.SetValue(cellValue).Apply(cellAction);
+            foreach (var (cell, (_, cellValueFactory, cellAction)) in GenerateColumns(worksheet, currentRow).Zip(ColumnBlocks.SelectMany(block => block.Columns)))
+            {
+                cell.SetValue(cellValueFactory.Invoke(registration))
+                    .Apply(cellAction is not null
+                               ? xlCell => cellAction.Invoke(xlCell, registration)
+                               : null);
+            }
 
             currentRow++;
         }
@@ -67,36 +105,9 @@ internal class ExcelService : IExcelService
         } while (++column <= XLHelper.MaxColumnNumber);
     }
 
-    private static IEnumerable<(XLCellValue cellValue, Action<IXLCell>? cellAction)> GenerateCells(Registration registration)
-    {
-        yield return (registration.Id, null);
-        yield return (registration.Uid.ToString(), null);
-        yield return (registration.Created.ToOffset(TimeSpan.FromHours(3)).DateTime, null);
-        yield return (registration.PersonalDataConsent, null);
-        yield return (registration.ParticipantData.Name.LastName, null);
-        yield return (registration.ParticipantData.Name.FirstName, null);
-        yield return (registration.ParticipantData.Name.Patronym, null);
-        yield return (registration.ParticipantData.AgeGroup is { } ageGroup ? $"{ageGroup.StartGrade}\u2013{ageGroup.EndGrade} класс" : null, null);
-        yield return (registration.ParticipantData.Grade, null);
-        yield return (registration.ParticipantData.BirthDate.ToDateTime(new(0, 0)), null);
-        yield return (registration.ParticipantData.Snils, cell => cell.FormatInvalidData(!registration.ParticipantData.IsSnilsValid));
-        yield return (registration.ParticipantData.Email, null);
-        yield return (registration.ParticipantData.School, null);
-        yield return (registration.ParticipantData.Region, null);
-        yield return (registration.ParentData.Name.LastName, null);
-        yield return (registration.ParentData.Name.FirstName, null);
-        yield return (registration.ParentData.Name.Patronym, null);
-        yield return (registration.ParentData.Email, null);
-        yield return (registration.ParentData.Phone, null);
-        yield return (registration.TeacherData.Name.LastName, null);
-        yield return (registration.TeacherData.Name.FirstName, null);
-        yield return (registration.TeacherData.Name.Patronym, null);
-        yield return (registration.TeacherData.Email, null);
-        yield return (registration.TeacherData.Phone, null);
-        yield return (registration.TeacherData.School, null);
-    }
+    private record ColumnBlock(string? Name, Column[] Columns);
 
-    private record ColumnBlock(string? Name, string[] ColumnNames);
+    private record Column(string Name, Func<Registration, XLCellValue> ValueFactory, Action<IXLCell, Registration>? CellAction = null);
 }
 
 file static class Extensions

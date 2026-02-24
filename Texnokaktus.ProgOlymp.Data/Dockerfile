@@ -11,8 +11,6 @@ ARG VERSION
 ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /src
-COPY ["Directory.Packages.props", "./"]
-#COPY ["modules/Common.Contracts/Directory.Packages.props", "modules/Common.Contracts/"]
 COPY ["Texnokaktus.ProgOlymp.Data/Texnokaktus.ProgOlymp.Data.csproj", "Texnokaktus.ProgOlymp.Data/"]
 COPY ["Texnokaktus.ProgOlymp.Data.Infrastructure/Texnokaktus.ProgOlymp.Data.Infrastructure.csproj", "Texnokaktus.ProgOlymp.Data.Infrastructure/"]
 COPY ["modules/Common.Contracts/Texnokaktus.ProgOlymp.Common.Contracts/Texnokaktus.ProgOlymp.Common.Contracts.csproj", "modules/Common.Contracts/Texnokaktus.ProgOlymp.Common.Contracts/"]

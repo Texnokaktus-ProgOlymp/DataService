@@ -13,7 +13,7 @@ public class ContestsController(IRegistrationDataServiceClient client) : Control
     public async Task<IActionResult> Contest(int contestId) =>
         await GetContestRegistrationsAsync(contestId) is { } contestRegistrations
             ? View(contestRegistrations)
-            : NotFound();
+            : RedirectToAction(nameof(Index));
 
     [Route("[controller]/{contestId:int}/excel")]
     public async Task<IActionResult> Excel(int contestId)

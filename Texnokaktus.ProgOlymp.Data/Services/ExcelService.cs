@@ -1,0 +1,110 @@
+using ClosedXML.Excel;
+using Texnokaktus.ProgOlymp.Data.Models;
+using Texnokaktus.ProgOlymp.Data.Services.Abstractions;
+
+namespace Texnokaktus.ProgOlymp.Data.Services;
+
+internal class ExcelService : IExcelService
+{
+    private static readonly IEnumerable<ColumnBlock> Columns =
+    [
+        new(null, ["ID регистрации", "UID", "Время регистрации", "Согласие на обработку ПД"]),
+        new("Участник", [ "Фамилия", "Имя", "Отчество", "Возрастная группа", "Класс", "Дата рождения", "СНИЛС", "Email", "ОУ", "Регион" ]),
+        new("Родитель", [ "Фамилия", "Имя", "Отчество", "Email", "Телефон" ]),
+        new("Наставник", [ "Фамилия", "Имя", "Отчество", "Email", "Телефон", "ОУ" ]),
+    ];
+
+    public Stream GenerateExcel(IEnumerable<Registration> registrations)
+    {
+        using var workbook = new XLWorkbook();
+        var worksheet = workbook.Worksheets.Add();
+
+        var currentColumn = 1;
+        foreach (var (blockName, columnNames) in Columns)
+        {
+            if (blockName is not null)
+            {
+                var topCell = worksheet.Cell(1, currentColumn);
+                topCell.SetValue(blockName).IsHeader();
+                topCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                worksheet.Range(topCell, worksheet.Cell(1, currentColumn + columnNames.Length - 1)).Merge();
+            }
+            
+            foreach (var column in columnNames)
+            {
+                var cell = worksheet.Cell(2, currentColumn++);
+                cell.SetValue(column).IsHeader();
+            }
+        }
+
+        var currentRow = 3;
+        foreach (var registration in registrations)
+        {
+            var column = 0;
+            worksheet.Cell(currentRow, ++column).SetValue(registration.Id);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.Uid.ToString());
+            worksheet.Cell(currentRow, ++column).SetValue(registration.Created.ToOffset(TimeSpan.FromHours(3)).DateTime);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.PersonalDataConsent);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.LastName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.FirstName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Name.Patronym);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.AgeGroup is { } ageGroup ? $"{ageGroup.StartGrade}\u2013{ageGroup.EndGrade} класс" : null);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Grade);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.BirthDate.ToDateTime(new(0, 0)));
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Snils).FormatInvalidData(!registration.ParticipantData.IsSnilsValid);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Email);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.School);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParticipantData.Region);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Name.LastName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Name.FirstName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Name.Patronym);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Email);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.ParentData.Phone);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Name.LastName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Name.FirstName);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Name.Patronym);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Email);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.Phone);
+            worksheet.Cell(currentRow, ++column).SetValue(registration.TeacherData.School);
+
+            currentRow++;
+        }
+
+        worksheet.Columns().AdjustToContents();
+
+        var stream = new MemoryStream();
+        workbook.SaveAs(stream);
+
+        if (stream.CanSeek) stream.Seek(0, SeekOrigin.Begin);
+
+        return stream;
+    }
+
+    private record ColumnBlock(string? Name, string[] ColumnNames);
+}
+
+
+
+file static class ExcelExtensions
+{
+    extension(IXLCell cell)
+    {
+        public IXLCell IsHeader()
+        {
+            cell.Style.Font.Bold = true;
+            return cell;
+        }
+
+        public IXLCell FormatInvalidData(bool condition)
+        {
+            if (!condition)
+                return cell;
+
+            cell.Style.Font.FontColor = XLColor.DarkRed;
+            cell.Style.Fill.BackgroundColor = XLColor.Pink;
+
+            return cell;
+        }
+    }
+}

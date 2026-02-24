@@ -2,6 +2,8 @@ using Serilog;
 using Texnokaktus.ProgOlymp.Data.Infrastructure;
 using Texnokaktus.ProgOlymp.Data.Middlewares;
 using Texnokaktus.ProgOlymp.Data.Options;
+using Texnokaktus.ProgOlymp.Data.Services;
+using Texnokaktus.ProgOlymp.Data.Services.Abstractions;
 using Texnokaktus.ProgOlymp.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,8 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom
                                                                  .AddOpenTelemetrySupport("DataService"));
 
 builder.Services.AddOptions<ContestRoutingOptions>().BindConfiguration(nameof(ContestRoutingOptions));
+
+builder.Services.AddSingleton<IExcelService, ExcelService>();
 
 var app = builder.Build();
 

@@ -13,7 +13,7 @@ public class ContestsController(IRegistrationDataServiceClient client, IExcelSer
         RedirectToAction(nameof(Contest),
                          new
                          {
-                             contestId = routingOptions.Value.DefaultContest
+                             contestName = routingOptions.Value.DefaultContest
                          });
 
     [Route("[controller]/{contestName}")]

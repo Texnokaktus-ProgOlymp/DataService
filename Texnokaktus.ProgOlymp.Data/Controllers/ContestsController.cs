@@ -16,16 +16,16 @@ public class ContestsController(IRegistrationDataServiceClient client, IExcelSer
                              contestId = routingOptions.Value.DefaultContest
                          });
 
-    [Route("[controller]/{contestId:int}")]
-    public async Task<IActionResult> Contest(int contestId) =>
-        await GetContestRegistrationsAsync(contestId) is { } contestRegistrations
+    [Route("[controller]/{contestName}")]
+    public async Task<IActionResult> Contest(string contestName) =>
+        await GetContestRegistrationsAsync(contestName) is { } contestRegistrations
             ? View(contestRegistrations)
             : RedirectToAction(nameof(Index));
 
-    [Route("[controller]/{contestId:int}/excel")]
-    public async Task<IActionResult> Excel(int contestId)
+    [Route("[controller]/{contestName}/excel")]
+    public async Task<IActionResult> Excel(string contestName)
     {
-        if (await GetContestRegistrationsAsync(contestId) is not { } contestRegistrations)
+        if (await GetContestRegistrationsAsync(contestName) is not { } contestRegistrations)
             return NotFound();
 
         var stream = excelService.GenerateExcel(contestRegistrations.Registrations);
@@ -35,12 +35,12 @@ public class ContestsController(IRegistrationDataServiceClient client, IExcelSer
                     $"registrations-{DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(3)):s}.xlsx");
     }
 
-    private async Task<ContestRegistrations?> GetContestRegistrationsAsync(int contestId)
+    private async Task<ContestRegistrations?> GetContestRegistrationsAsync(string contestName)
     {
-        if (await client.GetRegistrationsAsync(contestId) is not { } contestRegistrations)
+        if (await client.GetRegistrationsAsync(contestName) is not { } contestRegistrations)
             return null;
 
-        return new(contestId,
+        return new(contestName,
                    contestRegistrations.Contest.Name,
                    contestRegistrations.Registrations.Select(registration => registration.MapRegistration()));
     }

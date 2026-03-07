@@ -4,5 +4,5 @@ namespace Texnokaktus.ProgOlymp.Data.Infrastructure.Clients.Abstractions;
 
 public interface IRegistrationDataServiceClient
 {
-    Task<ContestRegistrations?> GetRegistrationsAsync(int contestId);
+    Task<ContestRegistrations?> GetRegistrationsAsync(string contestName);
 }

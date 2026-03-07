@@ -6,13 +6,13 @@ namespace Texnokaktus.ProgOlymp.Data.Infrastructure.Clients;
 
 public class RegistrationDataServiceClient(RegistrationDataService.RegistrationDataServiceClient client) : IRegistrationDataServiceClient
 {
-    public async Task<ContestRegistrations?> GetRegistrationsAsync(int contestId)
+    public async Task<ContestRegistrations?> GetRegistrationsAsync(string contestName)
     {
         try
         {
             var request = new GetRegistrationsRequest
             {
-                ContestId = contestId
+                ContestName = contestName
             };
 
             var response = await client.GetRegistrationsAsync(request);

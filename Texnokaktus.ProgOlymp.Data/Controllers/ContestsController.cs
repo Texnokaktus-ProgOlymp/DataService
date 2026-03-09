@@ -41,7 +41,7 @@ public class ContestsController(IRegistrationDataServiceClient client, IExcelSer
             return null;
 
         return new(contestName,
-                   contestRegistrations.Contest.Name,
+                   contestRegistrations.Contest.Title,
                    contestRegistrations.Registrations.Select(registration => registration.MapRegistration()));
     }
 }

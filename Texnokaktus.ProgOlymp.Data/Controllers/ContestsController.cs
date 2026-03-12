@@ -42,6 +42,8 @@ public class ContestsController(IRegistrationDataServiceClient client, IExcelSer
 
         return new(contestName,
                    contestRegistrations.Contest.Title,
+                   contestRegistrations.Contest.PreliminaryStageContestId,
+                   contestRegistrations.Contest.FinalStageContestId,
                    contestRegistrations.Registrations.Select(registration => registration.MapRegistration()));
     }
 }
@@ -56,7 +58,13 @@ file static class MappingExtensions
             registration.ParticipantData.MapParticipantData(),
             registration.ParentData.MapParentData(),
             registration.TeacherData.MapTeacherData(),
-            registration.PersonalDataConsent);
+            registration.PersonalDataConsent,
+            registration.PreliminaryParticipation?.PapParticipation(),
+            registration.FinalParticipation?.PapParticipation());
+
+    private static ContestParticipation PapParticipation(this Common.Contracts.Grpc.Data.ContestParticipation contestParticipation) =>
+        new(contestParticipation.YandexContestId,
+            contestParticipation.State);
 
     private static User MapUser(this Common.Contracts.Grpc.Data.User user) =>
         new(user.Id,

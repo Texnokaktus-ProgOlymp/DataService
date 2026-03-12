@@ -27,8 +27,10 @@
         @* <th>Телефон (родитель)</th> *@
         <th>Наставник</th>
         <th>ОУ (наставник)</th>
-        <th>Email (наставник)</th>
-        <th>Телефон (наставник)</th>
+        @* <th>Email (наставник)</th> *@
+        @* <th>Телефон (наставник)</th> *@
+        <th>Участие в отборочным туре</th>
+        <th>Участие в очном туре</th>
     </tr>
     </thead>
     <tbody>
@@ -56,8 +58,10 @@
             @* <td>@application.Parent.Phone</td> *@
             <td>@registration.TeacherData.Name.FullName</td>
             <td>@registration.TeacherData.School</td>
-            <td>@registration.TeacherData.Email</td>
-            <td>@registration.TeacherData.Phone</td>
+            @* <td>@registration.TeacherData.Email</td> *@
+            @* <td>@registration.TeacherData.Phone</td> *@
+            @await Html.PartialAsync("ContestStageParticipationPartial", (Model.PreliminaryYandexContestId, registration.PreliminaryStageParticipation))
+            @await Html.PartialAsync("ContestStageParticipationPartial", (Model.FinalYandexContestId, registration.FinalStageParticipation))
         </tr>
     }
     </tbody>

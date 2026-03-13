@@ -4,13 +4,13 @@
 @switch (Model.Participation?.ParticipationState)
 {
     case ParticipationState.NotStarted:
-        <td class="bg-info">Не начато</td>
+        <td class="bg-info text-center">Не начато</td>
         break;
     case ParticipationState.InProgress:
         @if (Model.YandexContestId.HasValue)
         {
-            <td class="bg-warning">
-                <a href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=participantId=@Model.Participation.YandexContestId" target="_blank">В процессе</a>
+            <td class="bg-warning text-center">
+                <a href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=participantId=@Model.Participation.YandexContestParticipantId" target="_blank">В процессе</a>
             </td>
         }
         else
@@ -21,16 +21,16 @@
     case ParticipationState.Finished:
         @if (Model.YandexContestId.HasValue)
         {
-            <td class="bg-success">
-                <a class="text-white" href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=participantId=@Model.Participation.YandexContestId" target="_blank">Завершено</a>
+            <td class="bg-success text-center">
+                <a class="text-white" href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=participantId=@Model.Participation.YandexContestParticipantId" target="_blank">Завершено</a>
             </td>
         }
         else
         {
-            <td class="bg-success text-whiteg">Завершено</td>
+            <td class="bg-success text-white text-center">Завершено</td>
         }
         break;
     default:
-        <td class="bg-secondary text-white">Не зарегистрирован</td>
+        <td class="bg-secondary text-white text-center">Не назначено</td>
         break;
 }

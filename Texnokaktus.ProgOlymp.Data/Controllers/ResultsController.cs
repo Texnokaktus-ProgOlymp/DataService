@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Texnokaktus.ProgOlymp.Common.Contracts.Grpc.Results;
 using Texnokaktus.ProgOlymp.Data.Extensions;
 using Texnokaktus.ProgOlymp.Data.Infrastructure.Clients.Abstractions;
 using Texnokaktus.ProgOlymp.Data.Models;
@@ -23,9 +22,11 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
                                                                            ContestStage.Qualification => Common.Contracts.Grpc.Results.ContestStage.Preliminary,
                                                                            ContestStage.Final         => Common.Contracts.Grpc.Results.ContestStage.Final,
                                                                            _                          => throw new ArgumentOutOfRangeException(nameof(contestStage), contestStage, null)
-                                                                       });
+                                                                       })
+                      ?? throw new InvalidOperationException("Results not found");
 
-        var registrations = await registrationDataServiceClient.GetRegistrationsAsync(contestName) ?? throw new InvalidOperationException("Registrations not found");
+        var registrations = await registrationDataServiceClient.GetRegistrationsAsync(contestName)
+                         ?? throw new InvalidOperationException("Registrations not found");
 
         var problems = results.Problems.Select(problem => new Problem(problem.Alias, problem.Name)).ToArray();
 

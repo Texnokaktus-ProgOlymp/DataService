@@ -1,3 +1,4 @@
+@using System.Text.Encodings.Web
 @using Texnokaktus.ProgOlymp.Common.Contracts.Grpc.Common
 @model (long? YandexContestId, Texnokaktus.ProgOlymp.Data.Models.ContestParticipation? Participation)
 
@@ -10,7 +11,7 @@
         @if (Model.YandexContestId.HasValue)
         {
             <td class="bg-warning text-center">
-                <a href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=participantId=@Model.Participation.YandexContestParticipantId" target="_blank">В процессе</a>
+                <a href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=@(UrlEncoder.Default.Encode($"participantId={Model.Participation.YandexContestParticipantId}"))" target="_blank">В процессе</a>
             </td>
         }
         else
@@ -22,7 +23,7 @@
         @if (Model.YandexContestId.HasValue)
         {
             <td class="bg-success text-center">
-                <a class="text-white" href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=participantId=@Model.Participation.YandexContestParticipantId" target="_blank">Завершено</a>
+                <a class="text-white" href="https://admin.contest.yandex.ru/contests/@Model.YandexContestId/submissions?filter=@(UrlEncoder.Default.Encode($"participantId={Model.Participation.YandexContestParticipantId}"))" target="_blank">Завершено</a>
             </td>
         }
         else

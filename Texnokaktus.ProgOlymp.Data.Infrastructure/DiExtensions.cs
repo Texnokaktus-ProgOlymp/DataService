@@ -14,7 +14,8 @@ public static class DiExtensions
         services.AddGrpcClient<RegistrationDataService.RegistrationDataServiceClient>(options => options.Address = configuration.GetConnectionStringUri(nameof(RegistrationDataService)));
         services.AddGrpcClient<ResultService.ResultServiceClient>(options => options.Address = configuration.GetConnectionStringUri(nameof(ResultService)));
 
-        return services.AddScoped<IRegistrationDataServiceClient, RegistrationDataServiceClient>();
+        return services.AddScoped<IRegistrationDataServiceClient, RegistrationDataServiceClient>()
+                       .AddScoped<IResultServiceClient, ResultServiceClient>();
     }
 
     private static Uri? GetConnectionStringUri(this IConfiguration configuration, string name) =>

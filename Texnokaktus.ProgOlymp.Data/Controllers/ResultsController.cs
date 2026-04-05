@@ -13,20 +13,17 @@ namespace Texnokaktus.ProgOlymp.Data.Controllers;
 
 [Route("contests/{contestName}/{contestStage}/results")]
 public class ResultsController(IRegistrationDataServiceClient registrationDataServiceClient,
-                               ResultService.ResultServiceClient resultServiceClient) : Controller
+                               IResultServiceClient resultServiceClient) : Controller
 {
     public async Task<IActionResult> ContestStageResults(string contestName, ContestStage contestStage)
     {
-        var results = await resultServiceClient.GetResultsAsync(new()
-        {
-            ContestName = contestName,
-            Stage = contestStage switch
-            {
-                ContestStage.Qualification => Common.Contracts.Grpc.Results.ContestStage.Preliminary,
-                ContestStage.Final         => Common.Contracts.Grpc.Results.ContestStage.Final,
-                _                          => throw new ArgumentOutOfRangeException(nameof(contestStage), contestStage, null)
-            }
-        });
+        var results = await resultServiceClient.GetContestResultsAsync(contestName,
+                                                                       contestStage switch
+                                                                       {
+                                                                           ContestStage.Qualification => Common.Contracts.Grpc.Results.ContestStage.Preliminary,
+                                                                           ContestStage.Final         => Common.Contracts.Grpc.Results.ContestStage.Final,
+                                                                           _                          => throw new ArgumentOutOfRangeException(nameof(contestStage), contestStage, null)
+                                                                       });
 
         var registrations = await registrationDataServiceClient.GetRegistrationsAsync(contestName) ?? throw new InvalidOperationException("Registrations not found");
 

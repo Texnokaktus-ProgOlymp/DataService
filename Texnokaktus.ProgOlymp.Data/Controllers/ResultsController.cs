@@ -4,7 +4,7 @@ using Texnokaktus.ProgOlymp.Data.Extensions;
 using Texnokaktus.ProgOlymp.Data.Infrastructure.Clients.Abstractions;
 using Texnokaktus.ProgOlymp.Data.Models;
 using ContestStage = Texnokaktus.ProgOlymp.Data.Models.ContestStage;
-using Name = Texnokaktus.ProgOlymp.Common.Contracts.Grpc.Data.Name;
+using Problem = Texnokaktus.ProgOlymp.Data.Models.Problem;
 using ProblemResult = Texnokaktus.ProgOlymp.Data.Models.ProblemResult;
 using ResultGroup = Texnokaktus.ProgOlymp.Data.Models.ResultGroup;
 using ResultRow = Texnokaktus.ProgOlymp.Data.Models.ResultRow;
@@ -30,6 +30,8 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
 
         var registrations = await registrationDataServiceClient.GetRegistrationsAsync(contestName) ?? throw new InvalidOperationException("Registrations not found");
 
+        var problems = results.Problems.Select(problem => new Problem(problem.Alias, problem.Name)).ToArray();
+
         var resultGroups = results.ResultGroups
                                   .Select(group => new ResultGroup(group.Name, group.Rows.Join(registrations.Registrations,
                                                                                                resultRow => resultRow.ParticipantId,
@@ -50,6 +52,6 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
                                                                                               ).ToArray()))
                                   .ToArray();
 
-        return View(new ContestStageResult(registrations.Contest.Title, contestStage, resultGroups));
+        return View(new ContestStageResult(registrations.Contest.Title, contestStage, problems, resultGroups));
     }
 }

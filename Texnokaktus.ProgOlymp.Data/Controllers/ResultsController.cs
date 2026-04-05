@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Texnokaktus.ProgOlymp.Common.Contracts.Grpc.Results;
+using Texnokaktus.ProgOlymp.Data.Extensions;
 using Texnokaktus.ProgOlymp.Data.Infrastructure.Clients.Abstractions;
 using Texnokaktus.ProgOlymp.Data.Models;
 using ContestStage = Texnokaktus.ProgOlymp.Data.Models.ContestStage;
@@ -34,12 +35,10 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
                                                                                                resultRow => resultRow.ParticipantId,
                                                                                                registration => registration.Id,
                                                                                                (resultRow, registration) =>
-                                                                                                   new ResultRow()
+                                                                                                   new ResultRow
                                                                                                    {
                                                                                                        Place = resultRow.Place,
-                                                                                                       FullName = GetFullName(registration.ParticipantData.Name),
-                                                                                                       School = registration.ParticipantData.School,
-                                                                                                       Region = registration.ParticipantData.Region,
+                                                                                                       Participant = registration.ParticipantData.MapParticipantData(),
                                                                                                        Results = resultRow.Results
                                                                                                                           .Select(problemResult => problemResult?.Score is { } score
                                                                                                                                                        ? new ProblemResult(score.BaseScore,
@@ -52,17 +51,5 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
                                   .ToArray();
 
         return View(new ContestStageResult(registrations.Contest.Title, contestStage, resultGroups));
-    }
-
-    private static string GetFullName(Name name)
-    {
-        return string.Join(" ", GetSNameParts(name));
-
-        static IEnumerable<string> GetSNameParts(Name name)
-        {
-            yield return name.LastName.Trim();
-            yield return name.FirstName.Trim();
-            if (name.Patronym is not null) yield return name.Patronym.Trim();
-        }
     }
 }

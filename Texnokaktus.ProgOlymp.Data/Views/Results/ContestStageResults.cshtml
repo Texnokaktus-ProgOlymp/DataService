@@ -1,0 +1,49 @@
+@using Texnokaktus.ProgOlymp.Data.Models
+@model ContestStageResult
+
+@{
+    var contestStage = Model.ContestStage switch
+    {
+        ContestStage.Qualification => "Отборочный тур",
+        ContestStage.Final         => "Очный тур",
+        _                          => throw new ArgumentOutOfRangeException(nameof(Model.ContestStage), Model.ContestStage, null)
+    };
+}
+
+<div class="d-flex flex-row justify-content-between">
+    <h2>@Model.Title, @contestStage &mdash; результаты</h2>
+    @* <a class="btn btn-success align-content-center" asp-action="Excel" asp-route-contestName="@Model.ContestName">Скачать в формате Excel</a> *@
+</div>
+
+@foreach (var result in Model.ResultGroups)
+{
+    <div>
+        <h3>@result.Name</h3>
+        
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>Место</th>
+                <th>ФИО</th>
+                <th>ОУ</th>
+                <th>Регион</th>
+                
+                <th>&#931;</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in result.Rows)
+            {
+                <tr>
+                    <td>@row.Place</td>
+                    <td>@row.Participant.Name.FullName</td>
+                    <td>@row.Participant.School</td>
+                    <td>@row.Participant.Region</td>
+                    
+                    <td>@row.TotalScore</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

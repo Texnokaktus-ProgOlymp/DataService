@@ -8,9 +8,9 @@ using Texnokaktus.ProgOlymp.Data.Services.Abstractions;
 
 namespace Texnokaktus.ProgOlymp.Data.Controllers;
 
-public class ContestsController(IRegistrationDataServiceClient client, IExcelService excelService, IOptions<ContestRoutingOptions> routingOptions) : Controller
+public class ContestsController(IRegistrationDataServiceClient client) : Controller
 {
-    public IActionResult Index() =>
+    public IActionResult Index([FromServices] IOptions<ContestRoutingOptions> routingOptions) =>
         RedirectToAction(nameof(Contest),
                          new
                          {
@@ -24,7 +24,7 @@ public class ContestsController(IRegistrationDataServiceClient client, IExcelSer
             : RedirectToAction(nameof(Index));
 
     [Route("[controller]/{contestName}/excel")]
-    public async Task<IActionResult> Excel(string contestName)
+    public async Task<IActionResult> Excel(string contestName, [FromServices] IExcelService excelService)
     {
         if (await GetContestRegistrationsAsync(contestName) is not { } contestRegistrations)
             return NotFound();

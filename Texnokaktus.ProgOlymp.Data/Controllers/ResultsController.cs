@@ -52,6 +52,10 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
                                                                         .ToArray()))
                                   .ToArray();
 
-        return View(new ContestStageResult(registrations.Contest.Title, contestStage, problems, resultGroups));
+        return View(new ContestStageResult(contestName,
+                                           registrations.Contest.Title,
+                                           contestStage,
+                                           problems,
+                                           resultGroups));
     }
 }

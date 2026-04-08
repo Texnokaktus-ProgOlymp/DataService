@@ -6,6 +6,7 @@
 }
 
 <div class="d-flex flex-row justify-content-between">
+    <a class="btn btn-primary align-content-center" asp-controller="Contests" asp-action="Contest" asp-route-contestName="@Model.ContestName">Назад</a>
     <h2>@Model.ContestTitle</h2>
     <a class="btn btn-success align-content-center" asp-action="Excel" asp-route-contestName="@Model.ContestName">Скачать в формате Excel</a>
 </div>

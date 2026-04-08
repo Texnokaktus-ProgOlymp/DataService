@@ -73,7 +73,7 @@ jobs:
           sep-tags: ','
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           tags:
-            type=semver,pattern={{version}},value=v${{ steps.get-version.outputs.version }}
+            ${{ steps.get-version.outputs.version }}
 
       - name: Get image name
         id: get-image-name

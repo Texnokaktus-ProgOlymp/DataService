@@ -1,0 +1,22 @@
+@model Texnokaktus.ProgOlymp.Data.Models.Contest
+
+@{
+    ViewBag.Title = "Соревнование";
+    Layout = "_Layout";
+}
+
+<h2>Соревнование</h2>
+
+<h4>Ссылки</h4>
+
+<ul>
+    <li>
+        <a asp-controller="Participants" asp-action="Index" asp-route-contestName="@Model.Name">Список участников</a>
+    </li>
+    <li>
+        <a asp-controller="Results" asp-action="ContestStageResults" asp-route-contestName="@Model.Name" asp-route-contestStage="Qualification">Результаты отборочного этапа</a>
+    </li>
+    <li>
+        <a asp-controller="Results" asp-action="ContestStageResults" asp-route-contestName="@Model.Name" asp-route-contestStage="Final">Результаты очного этапа</a>
+    </li>
+</ul>

@@ -1,0 +1,80 @@
+@using Texnokaktus.ProgOlymp.Data.Models
+@model ContestStageResult
+
+@{
+    Layout = "_Layout";
+    var contestStage = Model.ContestStage switch
+    {
+        ContestStage.Qualification => "Отборочный тур",
+        ContestStage.Final         => "Очный тур",
+        _                          => throw new ArgumentOutOfRangeException(nameof(Model.ContestStage), Model.ContestStage, null)
+    };
+
+    ViewBag.Title = $"{Model.Title}, {contestStage} \u2014 результаты";
+}
+
+<div class="d-flex flex-row justify-content-between">
+    <a class="btn btn-primary align-content-center" asp-controller="Contests" asp-action="Contest" asp-route-contestName="@Model.Name">Назад</a>
+    <h2>@Model.Title, @contestStage &mdash; результаты</h2>
+    <div></div>
+</div>
+
+@foreach (var result in Model.ResultGroups)
+{
+    <div>
+        <h3>@result.Name</h3>
+
+        <table class="table table-borderless table-striped align-middle">
+            <thead>
+            <tr>
+                <th>Место</th>
+                <th>ФИО</th>
+                <th>ОУ</th>
+                <th>Регион</th>
+
+                @foreach (var problem in Model.Problems)
+                {
+                    <th class="text-center">@problem.Alias</th>
+                }
+
+                <th class="text-center">&#931;</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in result.Rows)
+            {
+                <tr>
+                    <td>@row.Place</td>
+                    <td>@row.Participant.Name.FullName</td>
+                    <td>@row.Participant.School</td>
+                    <td>@row.Participant.Region</td>
+
+                    @foreach (var problemResult in row.Results)
+                    {
+                        <td class="text-center border border-dark">
+                            @if (problemResult.HasValue)
+                            {
+                                <span>@problemResult.Value.Score</span>
+
+                                @switch (problemResult.Value.Adjustment)
+                                {
+                                    case > 0:
+                                        <span class="text-success">+@problemResult.Value.Adjustment</span>
+                                        break;
+                                    case < 0:
+                                        <span class="text-danger">@problemResult.Value.Adjustment</span>
+                                        break;
+                                }
+                            }
+                        </td>
+                    }
+
+                    <td class="text-center border border-dark">
+                        <strong>@row.TotalScore</strong>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Views\Contests\Index.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Texnokaktus.ProgOlymp.Data.Infrastructure\Texnokaktus.ProgOlymp.Data.Infrastructure.csproj" />
     </ItemGroup>
 

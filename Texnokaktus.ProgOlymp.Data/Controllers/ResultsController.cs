@@ -47,7 +47,8 @@ public class ResultsController(IRegistrationDataServiceClient registrationDataSe
                                                                                                                                                           score.AdjustmentsSum)
                                                                                                                                       : (ProblemResult?)null)
                                                                                                          .ToArray(),
-                                                                                      TotalScore = resultRow.TotalScore
+                                                                                      TotalScore = resultRow.TotalScore,
+                                                                                      IsDisqualified = resultRow.IsDisqualified
                                                                                   })
                                                                         .ToArray()))
                                   .ToArray();

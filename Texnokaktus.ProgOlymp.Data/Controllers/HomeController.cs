@@ -4,7 +4,7 @@ using Texnokaktus.ProgOlymp.Data.Models;
 
 namespace Texnokaktus.ProgOlymp.Data.Controllers;
 
-public class HomeController(ILogger<HomeController> logger) : Controller
+public class HomeController : Controller
 {
     public IActionResult Index() => RedirectToAction(nameof(Index), "Contests");
 

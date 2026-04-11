@@ -70,7 +70,14 @@
                     }
 
                     <td class="text-center border border-dark">
-                        <strong>@row.TotalScore</strong>
+                        @if (!row.IsDisqualified)
+                        {
+                            <strong>@row.TotalScore</strong>
+                        }
+                        else
+                        {
+                            <strong>DQ</strong>
+                        }
                     </td>
                 </tr>
             }

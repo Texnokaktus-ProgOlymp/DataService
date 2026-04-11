@@ -6,11 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="ClosedXML" Version="0.105.0" />
-    <PackageVersion Include="Serilog.Enrichers.AssemblyName" Version="2.0.0" />
-    <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
-    <PackageVersion Include="Serilog.Extensions.Hosting" Version="10.0.0" />
-    <PackageVersion Include="Serilog.Settings.Configuration" Version="10.0.0" />
-    <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
-    <PackageVersion Include="Texnokaktus.ProgOlymp.OpenTelemetry" Version="2026.4.6.14" />
+    <PackageVersion Include="Texnokaktus.ProgOlymp.Platform" Version="2026.4.11.1" />
   </ItemGroup>
 </Project>
